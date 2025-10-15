@@ -21,34 +21,39 @@ The system is specifically designed for insurance policy documents but can be ad
 
 - Python 3.10 or higher
 - pip (Python package installer)
+- Node.js 18+ and npm
 - Git
 
 ### Installation Steps
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/anshul-dying/Private-Private.git
-   cd private-private
+   git clone https://github.com/DuhaZuhayr/LLM-Query-Retrieval-System.git
+   cd LLM-Query-Retrieval-System
    ```
 
-2. **Create a virtual environment**
+2. **Create and activate a virtual environment (backend)**
    ```bash
-   # Using Python
-   python -m venv venv
-   
-   # On Windows
-   venv\Scripts\activate
-   
-   # On macOS/Linux
-   source venv/bin/activate
+   # Create venv at repo root
+   python -m venv .venv
 
-   # Using Conda
-   conda create -m venv python==3.10 or later
+   # On Windows
+   .venv\Scripts\activate
+
+   # On macOS/Linux
+   source .venv/bin/activate
    ```
 
-3. **Install dependencies**
+3. **Install backend dependencies**
    ```bash
    pip install -r requirements.txt
+   ```
+
+4. **Install frontend dependencies**
+   ```bash
+   cd frontend
+   npm install
+   cd ..
    ```
 
 4. **Set up environment variables**
@@ -81,36 +86,43 @@ The system is specifically designed for insurance policy documents but can be ad
    ```
 
 6. **Run the application**
-   ```bash
-   # Start the FastAPI server
-   uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
-   ```
+   - Using the helper script (recommended on Windows):
+     ```powershell
+     # From repo root
+     powershell -ExecutionPolicy Bypass -File .\start.ps1
+     # Optional custom ports
+     # powershell -ExecutionPolicy Bypass -File .\start.ps1 -ApiPort 8000 -WebPort 3000
+     ```
+   - Or run manually in two terminals:
+     ```bash
+     # Terminal 1 (backend)
+     .venv/ScriptS/activate    # Windows
+     # source .venv/bin/activate  # macOS/Linux
+     uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
-7. **Access the API**
-   
-   The API will be available at `http://localhost:8000`
-   - API Documentation: `http://localhost:8000/docs`
-   - Alternative docs: `http://localhost:8000/redoc`
+     # Terminal 2 (frontend)
+     cd frontend
+     npm run dev
+     ```
+
+7. **Access the app**
+
+   - Frontend: `http://localhost:3000`
+   - API base: `http://localhost:8000`
+     - API docs (Swagger): `http://localhost:8000/docs`
+     - Alternative docs (ReDoc): `http://localhost:8000/redoc`
 
 ### Project Structure
 
 ```
 ├── api/                                  # FastAPI application
-│   ├── main.py                           # Main application entry point
-│   ├── routes/                           # API route definitions
-│   └── models/                           # Pydantic models
-├── core/                                 # Core business logic
-│   ├── decision_engine.py                # Main decision making logic
-│   ├── llm_client.py                     # LLM integration with caching
-│   ├── embedding_generator.py            # Text embedding generation
-│   ├── document_processor.py             # Document processing
-│   ├── clause_matcher.py                 # Clause matching logic
-│   └── logger_manager.py                 # Logging management
-├── config/                               # Configuration files
-├── database/                             # Database related files
+│   └── main.py                           # Main application entry point
+├── core/                                 # Core business logic (processing, embeddings, LLM, etc.)
+├── frontend/                             # Next.js app (UI)
+│   ├── package.json
+│   └── src/app/...                       # App Router pages
 ├── Docs/                                 # Sample documents and queries
-├── scripts/                              # Utility scripts
-├── tests/                                # Test files
+├── start.ps1                             # Windows helper to run API + web
 └── requirements.txt                      # Python dependencies
 ```
 
@@ -209,7 +221,4 @@ curl -X POST "http://localhost:8000/api/v1/hackrx/run" \
 ```
 
 The system will return structured responses with accurate answers based on the document content and intelligent analysis. Subsequent queries with similar content will be served from cache for near-instantaneous responses.
-#   L L M _ q u e r y _ r e t i e v a l _ s y s t e m  
- #   L L M _ Q u e r y _ R e t i e v a l _ S y s t e m  
- # RAG-ML
-# RAG-ML
+
